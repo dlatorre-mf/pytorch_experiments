@@ -282,6 +282,21 @@ interactive(True)
 plt.savefig("sgd_nobatch_error_test.jpg")
 
 
+norm_product = []
+for a,b,c,d,e in zip(c1norms,c2norms,c3norms,c4norms,f1norms):
+  norm_product.append(a*b*c*d*e)
+
+plt.figure(figsize=(4, 6))
+plt.grid()
+plt.margins(0)
+plt.plot(x, norm_product)
+plt.legend(loc=1)
+plt.xlabel("Epochs")
+plt.ylabel("Product of norms")
+interactive(True)
+plt.savefig("sgd_batch_productnorms_test_500.jpg")
+
+
 plt.figure(figsize=(4, 6))
 plt.get_cmap('Set1')
 plt.grid()
