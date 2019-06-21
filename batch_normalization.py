@@ -21,9 +21,13 @@ from torch.utils.data import sampler
 
 """ Set Number of Epochs """
 EPOCH_NUM = 4000
+NUM_TRAIN = 2000
+NUM_TEST = 500
+
 
 class ChunkSampler(sampler.Sampler):
-   """Samples elements sequentially from some offset.
+   """
+   Samples elements sequentially from some offset.
    Arguments:
        num_samples: # of desired datapoints
        start: offset where we should start selecting from
@@ -37,10 +41,6 @@ class ChunkSampler(sampler.Sampler):
 
    def __len__(self):
        return self.num_samples
-
-NUM_TRAIN = 2000
-NUM_TEST = 500
-
 
 """ Load CIFAR 10 Dataset and set batch size """
 transform = transforms.Compose(
@@ -112,7 +112,6 @@ class Net(nn.Module):
         return out
 
 
-
 net = Net()
 
 
@@ -121,8 +120,7 @@ def error_criterion(outputs,labels):
     max_vals, max_indices = torch.max(outputs,1)
     error = (max_indices != labels).float().sum()/max_indices.size()[0]
     return error
-
-
+  
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9)
 
@@ -167,8 +165,8 @@ test_running_loss = 0.0
 test_running_error = 0.0
 
 
-""" Training function on 50,000 datapoints, obtain the L2 norms of the weights at every layer"""
 def train():
+    """ Trains function obtains the L2 norms and norm gammas of the weights at every layer"""
     global running_loss
     global running_train_error
     
@@ -205,8 +203,9 @@ def train():
     running_train_error = 0.0
 
 
-""" Testing function on 10,000 examples """
+
 def test():
+  """ Tests function on and records loss and error at every epoch """
   global test_running_loss
   global test_running_error
   with torch.no_grad():
